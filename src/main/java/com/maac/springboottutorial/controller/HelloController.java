@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/")
 public class HelloController {
-    
+
     @GetMapping("/")
-    public String gretings(){
-        return "Endpoint working! happy coding!";
+    public String gretings() {
+        return "Happy coding!";
     }
 }
