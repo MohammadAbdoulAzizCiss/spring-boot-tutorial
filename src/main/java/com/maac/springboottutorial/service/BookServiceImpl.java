@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.maac.springboottutorial.db.entity.Book;
 import com.maac.springboottutorial.db.repository.BookRepository;
 import com.maac.springboottutorial.dto.BookDTO;
+import com.maac.springboottutorial.error.exception.BookNotFoundException;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -34,11 +35,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDTO getBookById(Long id) {
+    public BookDTO getBookById(Long id) throws BookNotFoundException {
         Optional<Book> bookOptional = bookRepository.findById(id);
         if (bookOptional.isPresent())
             return entityToDto(bookOptional.get());
-        return null;
+        throw new BookNotFoundException("Book does not exist");
 
     }
 
@@ -66,6 +67,11 @@ public class BookServiceImpl implements BookService {
     @Override
     public void removeBookById(Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public BookDTO findBookByTitle(String bookTitle) {
+        return entityToDto(bookRepository.findByTitleIgnoreCase(bookTitle).get(0));
     }
 
     @Override

@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.maac.springboottutorial.dto.BookDTO;
+import com.maac.springboottutorial.error.exception.BookNotFoundException;
 import com.maac.springboottutorial.service.BookService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/books")
@@ -30,17 +33,17 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public BookDTO getBookById(@PathVariable("id") Long id) {
+    public BookDTO getBookById(@PathVariable("id") Long id) throws BookNotFoundException {
         return bookService.getBookById(id);
     }
 
     @PostMapping("/")
-    public BookDTO createBook(@RequestBody BookDTO book) {
+    public BookDTO createBook(@Valid @RequestBody BookDTO book) {
         return this.bookService.saveNewBook(book);
     }
 
     @PutMapping("/{id}")
-    public BookDTO updateBook(@PathVariable("id") Long id, @RequestBody BookDTO bookDto) {
+    public BookDTO updateBook(@Valid @PathVariable("id") Long id, @RequestBody BookDTO bookDto) {
         return bookService.updateBook(id, bookDto);
     }
 
@@ -48,5 +51,10 @@ public class BookController {
     public String deleteBook(@PathVariable("id") Long id) {
         bookService.removeBookById(id);
         return "deleted!";
+    }
+
+    @GetMapping("/title/{title}")
+    public BookDTO getByName(@PathVariable("title") String title) {
+        return this.bookService.findBookByTitle(title);
     }
 }
