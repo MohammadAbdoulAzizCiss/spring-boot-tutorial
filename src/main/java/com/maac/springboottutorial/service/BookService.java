@@ -4,19 +4,20 @@ import java.util.List;
 
 import com.maac.springboottutorial.dto.BookDTO;
 import com.maac.springboottutorial.error.exception.BookNotFoundException;
+import com.maac.springboottutorial.error.exception.DuplicateBookException;
 
 public interface BookService {
 
-    BookDTO saveNewBook(BookDTO book);
+    BookDTO saveNewBook(BookDTO book) throws DuplicateBookException;
 
     List<BookDTO> getAllBooks();
 
     BookDTO getBookById(Long id) throws BookNotFoundException;
 
-    void removeBookById(Long id);
+    void removeBookById(Long id) throws BookNotFoundException;
 
-    BookDTO updateBook(Long id, BookDTO bookDto);
+    BookDTO updateBook(Long id, BookDTO bookDto) throws BookNotFoundException;
 
-    BookDTO findBookByTitle(String bookTitle);
+    BookDTO findBookByTitle(String bookTitle) throws BookNotFoundException;
 
 }
